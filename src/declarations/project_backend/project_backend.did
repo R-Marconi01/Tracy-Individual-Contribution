@@ -1,0 +1,116 @@
+type infoRow = 
+ record {
+   cityDestination: text;
+   cityOrigin: text;
+   companyName: text;
+   id: text;
+   productType: text;
+   quantity: nat;
+   supplier: text;
+ };
+type anon_class_28_1 = 
+ service {
+   addDocument: (DocumentInfo) -> ();
+   addSupplierInfo: (infoRow, vec principal) -> ();
+   addToFashionHouseSuppliers: (principal) -> ();
+   addUser: (User) -> ();
+   assign_role: (principal, opt Role) -> ();
+   callerPrincipal: () -> (principal);
+   getAllDBRows: () -> (vec infoRow) query;
+   getAllDocuments: () -> (vec DocumentInfo) query;
+   getAllFashionHouses: () -> (vec User) query;
+   getAllSuppliers: () -> (vec User) query;
+   getAllUsers: () -> (vec User) query;
+   getDB: () -> (vec Row);
+   getFashionHouseSuppliers: (principal) -> (vec User) query;
+   getFile: (text) -> (opt blob) query;
+   getSupplierByName: (text) -> (vec User) query;
+   getSupplierDocs: () -> (vec DocumentInfo) query;
+   getSupplierInfo: (principal) -> (vec infoRow) query;
+   getSupplierSuppliers: (text) -> (vec User) query;
+   getSupplierSuppliersCount: (text) -> (nat);
+   getSuppliersDocuments: (principal) -> (vec DocumentInfo) query;
+   getUser: () -> (Result) query;
+   http_request: (HttpRequest) -> (HttpResponse) query;
+   http_request_update: (HttpRequest) -> (HttpResponse);
+   invalidate_cache: () -> ();
+   my_role: () -> (text);
+   removeFashionHouse: (principal) -> ();
+   removeFromFashionHouseSuppliers: (principal) -> ();
+   removeSupplier: (principal) -> ();
+   toggleUserVisibility: (principal) -> ();
+   updateDocument: (DocumentInfo) -> ();
+   updateUser: (User) -> ();
+ };
+type User = 
+ record {
+   companyName: text;
+   created: int;
+   isFashion: bool;
+   isSupplier: bool;
+   isVisible: bool;
+   principalId: text;
+ };
+type Token = record {arbitrary_data: text;};
+type StreamingStrategy = variant {Callback: CallbackStrategy;};
+type StreamingCallbackHttpResponse = 
+ record {
+   body: blob;
+   token: opt Token;
+ };
+type Row = 
+ record {
+   cityDestination: text;
+   cityOrigin: text;
+   companyName: text;
+   id: nat;
+   productType: text;
+   quantity: nat;
+   supplier: text;
+ };
+type Role = 
+ variant {
+   admin;
+   authorized;
+   owner;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: User;
+ };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   status_code: nat16;
+   streaming_strategy: opt StreamingStrategy;
+   upgrade: opt bool;
+ };
+type HttpRequest = 
+ record {
+   body: blob;
+   headers: vec HeaderField;
+   method: text;
+   url: text;
+ };
+type HeaderField = 
+ record {
+   text;
+   text;
+ };
+type DocumentInfo = 
+ record {
+   file: text;
+   filename: text;
+   filetype: text;
+   id: text;
+   points: nat32;
+   verified: bool;
+ };
+type CallbackStrategy = 
+ record {
+   callback: func (Token) -> (StreamingCallbackHttpResponse) query;
+   token: Token;
+ };
+service : () -> anon_class_28_1
